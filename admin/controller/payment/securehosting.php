@@ -4,10 +4,8 @@ class ControllerPaymentSecureHosting extends Controller {
 
 	private $error = array(); 
 
-	
-
-
 	public function index() {
+
 		// Compatibility for 1.4.7
 		if(empty($this->session->data['token'])) $this->session->data['token'] = '';
 
@@ -240,4 +238,3 @@ class ControllerPaymentSecureHosting extends Controller {
 		}	
 	}
 }
-?>

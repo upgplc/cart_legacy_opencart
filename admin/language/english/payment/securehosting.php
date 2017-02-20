@@ -28,4 +28,3 @@ $_['error_checkcode']		= 'Check Code Required!';
 $_['error_filename']		= 'File Name Required!';
 $_['error_as_phrase']		= 'Advanced Secuitems Phrase Required!';
 $_['error_as_referrer']		= 'Advanced Secuitems Referrer Required!';
-?>

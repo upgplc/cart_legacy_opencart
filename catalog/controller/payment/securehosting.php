@@ -34,7 +34,7 @@ class ControllerPaymentSecureHosting extends Controller
          * Get Secure Hosting specific details *
          ***************************************/
         if ($this->config->get('securehosting_test')) {
-            $data['action'] = 'https://atlas-staging.upg.co.uk/secutran/secuitems.php';
+            $data['action'] = 'https://test.secure-server-hosting.com/secutran/secuitems.php';
         } else {
             $data['action'] = 'https://www.secure-server-hosting.com/secutran/secuitems.php';
         }

@@ -1,159 +1,187 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//Dtd HTML 4.01 Transitional//EN" "http://www.w3.org/tr/html4/loose.dtd">
 <html>
-	<head>
-		<title>Transaction Complete</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<link rel="stylesheet" type="text/css" href="/secutran/css/client_main.css" media="screen, projection" />
-		<link rel="stylesheet" type="text/css" href="/secutran/css/client_style.css" title="color " media="screen, projection" />
-		<script type="text/javascript">
-			
-			onload=function(){if('$success_url' != '') window.location = '$success_url';};
-		</script>
-	</head>
-	<body>
-		<div align="center">
-			<table width="80%"  border="0" cellspacing="0" cellpadding="0" class="banner">
-				<tr>
-					<td width="65%"></td>
-					<td colspan="2" valign="middle"></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td class="banner_title">&nbsp;</td>
-					<td class="banner_text">&nbsp;</td>
-				</tr>
-			</table>
-			<table width="80%" border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td id="top_left"></td>
-					<td id="top"></td>
-					<td id="top_right"></td>
-				</tr>
-				<tr>
-					<td id="left"></td>
-					<td><table width="100%"  border="0" cellspacing="0" cellpadding="0" class="header">
-							<tr>
-								<td id="header_top_left"></td>
-								<td id="header_top"></td>
-								<td id="header_top_right"></td>
-							</tr>
-							<tr>
-								<td id="header_left"></td>
-								<td id="main_bar" align="left"><table border="0" cellpadding="0" cellspacing="0">
-										<tr>
-											<td colspan="6" style="font-size: 14px; font-weight: bold; color: #FFFFFF; ">TRANSACTION COMPLETE</td>
-										</tr>
-									</table></td>
-								<td id="header_right"></td>
-							</tr>
-							<tr>
-								<td id="header_bottom_left"></td>
-								<td id="header_bottom"></td>
-								<td id="header_bottom_right"></td>
-							</tr>
-						</table></td>
-					<td id="right"></td>
-				</tr>
-				<tr>
-					<td id="left"></td>
-					<td><div id="main_content">
-							<div id="navigation"></div>
-							<div id="text_content">
-								<table cellSpacing="2" cellPadding="4" border="0" width="100%">
-									<tr>
-										<td colspan="3" class="message_success" style="text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 1px;"><p>Your transaction has been authorised and your card will be billed for $transactionamount.</p>
-											<p> Please note your transaction reference number: $trannum and print or save this page for your records.</p></td>
-									</tr>
-									<tr>
-										<td colspan="3">&nbsp;</td>
-									</tr>
-									<tr>
-										<td colspan="3">&nbsp;</td>
-									</tr>
-									<tr>
-										<td width="5%" height="24">&nbsp;</td>
-										<td><table width="100%" border="0" cellspacing="0" cellpadding="2" class="basket_table">
-												<tr>
-													<td width="3%">&nbsp;</td>
-													<td width="40%" style="padding-left: 10px; text-align: left; font-weight: bold;">Name</td>
-													<td width="15%">Quantity</td>
-													<td width="16%">Price</td>
-													<td width="17%">Total</td>
-												</tr>
-												<loopstart:purchaseditems>
-												<tr>
-													<td class="table_cell_left">&nbsp;</td>
-													<td style="padding-left: 10px; text-align: left;">$description</td>
-													<td>$qty</td>
-													<td>$price</td>
-													<td>$total</td>
-												</tr>
-												<loopend>
-												<tr>
-													<td colspan="6" class="table_bottom">&nbsp;</td>
-												</tr>
-											</table></td>
-										<td width="5%">&nbsp;</td>
-									</tr>
-									<tr>
-										<td>&nbsp;</td>
-										<td><div align="right">
-												<table width="40%" border="0" cellspacing="0" cellpadding="2" class="basket_table">
-													<tr>
-														<td class="table_header_left" style="text-align: right; padding-right: 10px;">&nbsp;</td>
-														<td>&nbsp;</td>
-													</tr>
-													<tr>
-														<td class="table_header_left" style="text-align: right; padding-right: 10px;">Tax:</td>
-														<td><strong>$transactioncurrency $transactiontax</strong></td>
-													</tr>
-													<tr>
-														<td width="55%" class="table_header_left" style="text-align: right; padding-right: 10px;">Shipping:</td>
-														<td width="45%"><span class="basket_table_cell"><strong>$transactioncurrency&nbsp;$shippingcharge</strong></span></td>
-													</tr>
-													<tr>
-														<td class="table_header_left" style="text-align: right; padding-right: 10px;">Total:</td>
-														<td><span class="basket_table_cell"><strong>$transactionamount</strong></span></td>
-													</tr>
-													<tr>
-														<td colspan="2" class="table_bottom">&nbsp;</td>
-													</tr>
-												</table>
-											</div></td>
-										<td>&nbsp;</td>
-									</tr>
-								</table></div>
-						</div
-					</td>
-					<td id="right"></td>
-				</tr>
-				<tr>
-					<td id="left"></td>
-					<td>&nbsp;</td>
-					<td id="right"></td>
-				</tr>
-				<tr>
-					<td id="left"></td>
-					<td><table width="100%"  border="0" cellspacing="0" cellpadding="0" class="header">
-							<tr>
-								<td id="header_top_left"></td>
-								<td id="header_top">&nbsp;</td>
-								<td id="header_top_right"></td>
-							</tr>
-							<tr>
-								<td id="header_bottom_left"></td>
-								<td id="header_bottom"></td>
-								<td id="header_bottom_right"></td>
-							</tr>
-						</table></td>
-					<td id="right"></td>
-				</tr>
-				<tr>
-					<td id="bottom_left"></td>
-					<td id="bottom"></td>
-					<td id="bottom_right"></td>
-				</tr>
-			</table>
-		</div>
-	</body>
+<head>
+    <title>Transaction Complete</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Refresh" content="5; url=$success_url">
+    <link rel="stylesheet" type="text/css" href="/secutran/css/client_main.css" media="screen, projection"/>
+    <link rel="stylesheet" type="text/css" href="/secutran/css/client_style.css" title="color "
+          media="screen, projection"/>
+</head>
+<body>
+<div align="center">
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="banner">
+        <tr>
+            <td width="65%"></td>
+            <td colspan="2" valign="middle"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td class="banner_title">&nbsp;</td>
+            <td class="banner_text">&nbsp;</td>
+        </tr>
+    </table>
+    <table width="80%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td id="top_left"></td>
+            <td id="top"></td>
+            <td id="top_right"></td>
+        </tr>
+        <tr>
+            <td id="left"></td>
+            <td>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="header">
+                    <tr>
+                        <td id="header_top_left"></td>
+                        <td id="header_top"></td>
+                        <td id="header_top_right"></td>
+                    </tr>
+                    <tr>
+                        <td id="header_left"></td>
+                        <td id="main_bar" align="left">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td colspan="6" style="font-size: 14px; font-weight: bold; color: #FFFFFF; ">
+                                        TRANSACTION COMPLETE
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td id="header_right"></td>
+                    </tr>
+                    <tr>
+                        <td id="header_bottom_left"></td>
+                        <td id="header_bottom"></td>
+                        <td id="header_bottom_right"></td>
+                    </tr>
+                </table>
+            </td>
+            <td id="right"></td>
+        </tr>
+        <tr>
+            <td id="left"></td>
+            <td>
+                <div id="main_content">
+                    <div id="navigation"></div>
+                    <div id="text_content">
+                        <table cellSpacing="2" cellPadding="4" border="0" width="100%">
+                            <tr>
+                                <td colspan="3" class="message_success"
+                                    style="text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 1px;">
+                                    <p>Your transaction has been authorised and your card will be billed for
+                                        $transactionamount.</p>
+                                    <p> Please note your transaction reference number: $trannum and print or save this
+                                        page for your records.</p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td width="5%" height="24">&nbsp;</td>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="basket_table">
+                                        <tr>
+                                            <td width="3%">&nbsp;</td>
+                                            <td width="40%"
+                                                style="padding-left: 10px; text-align: left; font-weight: bold;">Name
+                                            </td>
+                                            <td width="15%">Quantity</td>
+                                            <td width="16%">Price</td>
+                                            <td width="17%">Total</td>
+                                        </tr>
+                                        <loopstart:purchaseditems>
+                                            <tr>
+                                                <td class="table_cell_left">&nbsp;</td>
+                                                <td style="padding-left: 10px; text-align: left;">$description</td>
+                                                <td>$qty</td>
+                                                <td>$price</td>
+                                                <td>$total</td>
+                                            </tr>
+                                            <loopend>
+                                                <tr>
+                                                    <td colspan="6" class="table_bottom">&nbsp;</td>
+                                                </tr>
+                                    </table>
+                                </td>
+                                <td width="5%">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <div align="right">
+                                        <table width="40%" border="0" cellspacing="0" cellpadding="2"
+                                               class="basket_table">
+                                            <tr>
+                                                <td class="table_header_left"
+                                                    style="text-align: right; padding-right: 10px;">&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table_header_left"
+                                                    style="text-align: right; padding-right: 10px;">Tax:
+                                                </td>
+                                                <td><strong>$transactioncurrency $transactiontax</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="55%" class="table_header_left"
+                                                    style="text-align: right; padding-right: 10px;">Shipping:
+                                                </td>
+                                                <td width="45%"><span class="basket_table_cell"><strong>$transactioncurrency&nbsp;$shippingcharge</strong></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table_header_left"
+                                                    style="text-align: right; padding-right: 10px;">Total:
+                                                </td>
+                                                <td><span class="basket_table_cell"><strong>$transactionamount</strong></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="table_bottom">&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div
+            </td>
+            <td id="right"></td>
+        </tr>
+        <tr>
+            <td id="left"></td>
+            <td>&nbsp;</td>
+            <td id="right"></td>
+        </tr>
+        <tr>
+            <td id="left"></td>
+            <td>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="header">
+                    <tr>
+                        <td id="header_top_left"></td>
+                        <td id="header_top">&nbsp;</td>
+                        <td id="header_top_right"></td>
+                    </tr>
+                    <tr>
+                        <td id="header_bottom_left"></td>
+                        <td id="header_bottom"></td>
+                        <td id="header_bottom_right"></td>
+                    </tr>
+                </table>
+            </td>
+            <td id="right"></td>
+        </tr>
+        <tr>
+            <td id="bottom_left"></td>
+            <td id="bottom"></td>
+            <td id="bottom_right"></td>
+        </tr>
+    </table>
+</div>
+</body>
 </html>
