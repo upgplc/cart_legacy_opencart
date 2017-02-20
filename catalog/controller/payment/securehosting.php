@@ -1,53 +1,53 @@
 <?php
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
 
 class ControllerPaymentSecureHosting extends Controller
 {
 
-    private $error;
-
     public function index()
     {
+        $data['redirect_action'] = $this->url->link('payment/securehosting/redirect/', '', 'SSL');
 
+        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/securehosting.tpl')) {
+            return $this->load->view($this->config->get('config_template') . '/template/payment/securehosting.tpl', $data);
+        } else {
+            return $this->load->view('payment/securehosting.tpl', $data);
+        }
+    }
+
+    public function redirect()
+    {
         $this->load->language('payment/securehosting');
-
-        $data['button_confirm'] = $this->language->get('button_confirm');
-
         $this->load->model('checkout/order');
 
-        $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+        // get our order...
+        $order_info = $this->model_checkout_order
+            ->getOrder($this->session->data['order_id']);
+
+        // set our status to indicate the customer intended to redirect to Secure Hosting...
+        $this->model_checkout_order->addOrderHistory($this->session->data['order_id'], 1, 'Customer redirected to UPG.');
+
+
+        $data['order'] = $order_info;
+        $data['order_id'] = $this->session->data['order_id'];
 
         /***************************************
          * Get Secure Hosting specific details *
          ***************************************/
         if ($this->config->get('securehosting_test')) {
-            $data['action'] = 'https://test.secure-server-hosting.com/secutran/secuitems.php';
+            $data['action'] = 'https://atlas-staging.upg.co.uk/secutran/secuitems.php';
         } else {
             $data['action'] = 'https://www.secure-server-hosting.com/secutran/secuitems.php';
         }
-        if ($this->config->get('securehosting_shreference') != $this->config->get('securehosting_shreference')) { // This MUST be changed on your Nochex account!!!!
-            $data['securehosting_shreference'] = $this->config->get('securehosting_shreference');
-        } else {
-            $data['securehosting_shreference'] = $this->config->get('securehosting_shreference');
-        }
+        $data['securehosting_shreference'] = $this->config->get('securehosting_shreference');
+        $data['securehosting_checkcode'] = $this->config->get('securehosting_checkcode');
+        $data['securehosting_filename'] = $this->config->get('securehosting_filename');
 
-        if ($this->config->get('securehosting_checkcode') != $this->config->get('securehosting_checkcode')) { // This MUST be changed on your Nochex account!!!!
-            $data['securehosting_checkcode'] = $this->config->get('securehosting_checkcode');
-        } else {
-            $data['securehosting_checkcode'] = $this->config->get('securehosting_checkcode');
-        }
-
-        if ($this->config->get('securehosting_filename') != $this->config->get('securehosting_filename')) { // This MUST be changed on your Nochex account!!!!
-            $data['securehosting_filename'] = $this->config->get('securehosting_filename');
-        } else {
-            $data['securehosting_filename'] = $this->config->get('securehosting_filename');
-        }
         $data['success_url'] = $this->url->link('checkout/success', '', 'SSL');
         $data['cancel_url'] = $this->url->link('checkout/checkout', '', 'SSL');
 
         //Callback Fields
         $callbackurl = $this->url->link('payment/securehosting/callback/', '', 'SSL');
+
         //Check if the callback URL has a query string in it already, extract it and add it to the callback data
         if (preg_match('/^(.*)[?](.*)$/', $callbackurl, $Matches)) {
             $data['callbackurl'] = $Matches[1];
@@ -61,8 +61,6 @@ class ControllerPaymentSecureHosting extends Controller
         /*********************
          * Get Order Details *
          *********************/
-        $this->load->model('checkout/order');
-        $data['order_id'] = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         $data['transactionamount'] = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
         $data['transactioncurrency'] = $order_info['currency_code'];
 
@@ -101,7 +99,6 @@ class ControllerPaymentSecureHosting extends Controller
         /************************
          * Get customer details *
          ************************/
-
         $data['cardholdersname'] = $order_info['payment_firstname'] . ' ' . $order_info['payment_lastname'];
         $data['cardholdersemail'] = $order_info['email'];
         $data['cardholderaddr1'] = $order_info['payment_address_1'];
@@ -115,7 +112,6 @@ class ControllerPaymentSecureHosting extends Controller
         /************************
          * Get shipping details *
          ************************/
-
         if ($this->cart->hasShipping()) {
             $data['deliveryname'] = $order_info['shipping_firstname'] . ' ' . $order_info['shipping_lastname'];
             $data['deliveryaddr1'] = $order_info['shipping_address_1'];
@@ -138,18 +134,67 @@ class ControllerPaymentSecureHosting extends Controller
          * Get Advanced Secuitems *
          *************************/
         if ($this->config->get('securehosting_as')) {
-            $data['advancedsecuitems'] = $this->AdvancedSecuitems($secuitems, $this->data['transactionamount']);
+            $data['advancedsecuitems'] = $this->curl_advanced_secuitems($secuitems, $this->data['transactionamount']);
         }
 
-
-        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/securehosting.tpl')) {
-            return $this->load->view($this->config->get('config_template') . '/template/payment/securehosting.tpl', $data);
+        // render our payment redirect form...
+        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/redirect.tpl')) {
+            echo $this->load->view($this->config->get('config_template') . '/template/payment/redirect.tpl', $data);
         } else {
-            return $this->load->view('payment/securehosting.tpl', $data);
+            echo $this->load->view('payment/redirect.tpl', $data);
         }
     }
 
-    private function AdvancedSecuitems($secuitems, $transactionamount)
+    public function callback()
+    {
+        // load our language pack...
+        $this->language->load('payment/securehosting');
+
+        // if we cannot tie up the order then stop processing...
+        if (!isset($this->request->get['transactionnumber']) OR
+            $this->request->get['transactionnumber'] == '-1' OR
+            !isset($this->request->get['order_id'])
+        ) {
+            return;
+        }
+
+        // get the order id from the callback...
+        $order_id = $this->request->get['order_id'];
+
+        // load our order...
+        $this->load->model('checkout/order');
+        $order = $this->model_checkout_order->getOrder($order_id);
+
+        // do we have this order?
+        if (!$order) {
+            return;
+        }
+
+        // some standard messages...
+        $status_comment = 'Payment confirmed by UPG.';
+
+        // verify the callback if the 'verify' parameter is passed through...
+        if ($this->config->get('securehosting_sharedsecret')) {
+            if (!isset($this->request->get['verify'])) {
+                return;
+            }
+
+            $shared_secret = $this->config->get('securehosting_sharedsecret');
+            $verify = hash('sha1', $shared_secret . $this->request->get['transactionnumber'] . $shared_secret);
+            if (strtolower($verify) != strtolower($this->request->get['verify'])) {
+                $this->model_checkout_order->addOrderHistory($order_id, $order['order_status_id'], 'Unable to verify payment confirmation from UPG.', true);
+                return;
+            }
+
+            $status_comment = 'Payment confirmed and verified by UPG.';
+        }
+
+        // update our order status...
+        $order_status_id = $this->config->get('securehosting_order_status_id');
+        $this->model_checkout_order->addOrderHistory($order_id, $order_status_id, $status_comment, true);
+    }
+
+    private function curl_advanced_secuitems($secuitems, $transactionamount)
     {
         $post_data = "shreference=" . $this->config->get('securehosting_shreference');
         $post_data .= "&secuitems=" . $secuitems;
@@ -169,29 +214,4 @@ class ControllerPaymentSecureHosting extends Controller
 
         return $secuString;
     }
-
-    public function callback()
-    {
-        $this->language->load('payment/securehosting');
-
-
-        if (!isset($this->request->get['transactionnumber']) OR $this->request->get['transactionnumber'] == '-1') return;
-        if (!isset($this->request->get['order_id'])) return;
-        $order_id = $this->request->get['order_id'];
-
-
-        if ($this->config->get('securehosting_sharedsecret')) {
-            if (!isset($this->request->get['verify'])) return;
-            $Verify = hash('sha1', $this->config->get('securehosting_sharedsecret') . $this->request->get['transactionnumber'] . $this->config->get('securehosting_sharedsecret'));
-            if ($Verify != $this->request->get['verify']) return;
-        }
-
-        $this->load->model('checkout/order');
-        $order_info = $this->model_checkout_order->getOrder($order_id);
-        $order_status_id = $this->config->get('securehosting_order_status_id');
-        if (!$order_info) return;
-        $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('securehosting_order_status_id'));
-    }
 }
-
-?>
