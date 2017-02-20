@@ -1,6 +1,6 @@
 <?php 
 
-class ControllerPaymentSecureHosting extends Controller {
+class ControllerExtensionPaymentSecureHosting extends Controller {
 
 	private $error = array(); 
 
@@ -25,7 +25,7 @@ class ControllerPaymentSecureHosting extends Controller {
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->response->redirect($this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL'));
+			$this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL'));
 		}
 		
 
@@ -105,12 +105,12 @@ class ControllerPaymentSecureHosting extends Controller {
    		);
 
    		$data['breadcrumbs'][] = array(
-			'href'      => HTTPS_SERVER . 'index.php?route=payment/securehosting&token=' . $this->session->data['token'],
+			'href'      => HTTPS_SERVER . 'index.php?route=extension/payment/securehosting&token=' . $this->session->data['token'],
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
 				
-		$data['action'] = HTTPS_SERVER . 'index.php?route=payment/securehosting&token=' . $this->session->data['token'];
+		$data['action'] = HTTPS_SERVER . 'index.php?route=extension/payment/securehosting&token=' . $this->session->data['token'];
 		
 		$data['cancel'] = HTTPS_SERVER . 'index.php?route=extension/payment&token=' . $this->session->data['token'];
 		
@@ -214,27 +214,22 @@ class ControllerPaymentSecureHosting extends Controller {
 	 *
 	 */
 	protected function validate() {
-		if (!$this->user->hasPermission('modify', 'payment/securehosting')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/securehosting')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 		
 		if (empty($this->request->post['securehosting_shreference'])) {
-			$this->error['shreference'] = $this->language->get('error_shreference');
+			$this->error['warning'] = $this->language->get('error_shreference');
 		}
 		
 		if (empty($this->request->post['securehosting_checkcode'])) {
-			$this->error['checkcode'] = $this->language->get('error_checkcode');
+			$this->error['warning'] = $this->language->get('error_checkcode');
 		}
 		
 		if (empty($this->request->post['securehosting_filename'])) {
-			$this->error['filename'] = $this->language->get('error_filename');
+			$this->error['warning'] = $this->language->get('error_filename');
 		}
-		
-		
-		if (!$this->error) {
-			return true;
-		} else {
-			return false;
-		}	
+
+		return !$this->error;
 	}
 }
