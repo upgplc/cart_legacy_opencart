@@ -1,11 +1,11 @@
 <?php
 
-class ControllerPaymentSecureHosting extends Controller
+class ControllerExtensionPaymentSecureHosting extends Controller
 {
 
     public function index()
     {
-        $data['redirect_action'] = $this->url->link('payment/securehosting/redirect/', '', 'SSL');
+        $data['redirect_action'] = $this->url->link('extension/payment/securehosting/redirect/', '', 'SSL');
 
         if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/securehosting.tpl')) {
             return $this->load->view($this->config->get('config_template') . '/template/payment/securehosting.tpl', $data);
