@@ -66,58 +66,40 @@ class ControllerPaymentSecureHosting extends Controller
         $data['transactionamount'] = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
         $data['transactioncurrency'] = $order_info['currency_code'];
 
-        // //Need to do a bit of work to get the tax, shipping and sub total
-        // $this->load->model('extension/extension');
+        $shippingcharge = 0.0;
+        if ($this->cart->hasShipping()) {
+            $shippingcharge = $this->session->data['shipping_method']['cost'];
+        }
 
-        // $total_data = array();
-        // $total = 0;
-        $subtotal = 0;
-        $shippingcharge = 0;
-        $transactiontax = 0;
-        // $taxes = $this->cart->getTaxes();
-        // $results = $this->model_extension_extension->getExtensions('total');
+        $transactiontax = 0.0;
+        if (!empty($taxes = $this->cart->getTaxes())) {
+            foreach ($taxes as $tax_rate_id => $tax_amount) {
+                $transactiontax += $tax_amount;
+            }
+        }
 
-        // foreach ($results as $result) {
-        // 	if ($this->config->get($result['code'] . '_status')) {
-        // 		$this->load->model('total/' . $result['code']);
-        // 		$this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
-        // 	}
-        // }
-
-        // foreach($total_data as $total_array){
-        // 	switch($total_array['code']){
-        // 		case 'shipping':
-        // 		$shippingcharge += $total_array['value'];
-        // 		break;
-        // 		case 'sub_total':
-        // 		$subtotal += $total_array['value'];
-        // 		break;
-        // 		case 'tax':
-        // 		$transactiontax += $total_array['value'];
-        // 		break;
-        // 	}
-        // }
+        $subtotal = $this->cart->getSubTotal();
 
         $data['subtotal'] = $this->currency->format($subtotal, $order_info['currency_code'], false, false);
         $data['shippingcharge'] = $this->currency->format($shippingcharge, $order_info['currency_code'], false, false);
         $data['transactiontax'] = $this->currency->format($transactiontax, $order_info['currency_code'], false, false);
 
         /***************
-         * Get Prodcts *
+         * Get Products *
          ***************/
-
         $products = $this->cart->getProducts();
         $secuitems = '';
         foreach ($products as $product) {
             $price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $order_info['currency_code'], false, false);
             $total = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $order_info['currency_code'], false, false);
-            $secuitems .= '[' . $product['product_id'] . '||' . htmlentities($product['name'], ENT_QUOTES) . '|' . $price . '|' . $product['quantity'] . '|' . $total . ']';
+
+            $secuitems .= '[' . $product['product_id'] . '||' . htmlentities($product['name'], ENT_QUOTES) . '|' . number_format($price, 2) . '|' . $product['quantity'] . '|' . number_format($total, 2) . ']';
         }
         $data['secuitems'] = $secuitems;
 
 
         /************************
-         * Get custoemr details *
+         * Get customer details *
          ************************/
 
         $data['cardholdersname'] = $order_info['payment_firstname'] . ' ' . $order_info['payment_lastname'];
@@ -153,7 +135,7 @@ class ControllerPaymentSecureHosting extends Controller
         }
 
         /*************************
-         * Get Advanced Secuitem *
+         * Get Advanced Secuitems *
          *************************/
         if ($this->config->get('securehosting_as')) {
             $data['advancedsecuitems'] = $this->AdvancedSecuitems($secuitems, $this->data['transactionamount']);
