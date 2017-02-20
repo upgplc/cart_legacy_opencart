@@ -29,4 +29,3 @@ class ModelPaymentSecureHosting extends Model {
     	return $method_data;
   	}
 }
-?>

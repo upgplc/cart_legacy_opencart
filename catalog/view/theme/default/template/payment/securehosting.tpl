@@ -31,13 +31,13 @@
 	<input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
 
 </form>  
-	<div class="buttons">
-	    <div class="pull-right">
-	      <input type="button" onclick="confirmSubmit();" value="<?php echo $button_confirm; ?>" id="button-confirm" class="btn btn-primary" />
-	    </div>
+<div class="buttons">
+	<div class="pull-right">
+		<input type="button" onclick="confirmSubmit();" value="<?php echo $button_confirm; ?>" id="button-confirm" class="btn btn-primary" />
 	</div>
-<script type="text/javascript"><!--
-function confirmSubmit() {
-	$('#securehostingcheckout').submit();
-}
-//--></script>
+</div>
+<script type="text/javascript">
+	function confirmSubmit() {
+		$('#securehostingcheckout').submit();
+	}
+</script>
