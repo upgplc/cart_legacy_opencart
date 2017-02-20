@@ -5,7 +5,11 @@ class ControllerExtensionPaymentSecureHosting extends Controller
 
     public function index()
     {
+        $this->load->language('payment/securehosting');
+        $this->load->model('checkout/order');
+
         $data['redirect_action'] = $this->url->link('extension/payment/securehosting/redirect/', '', 'SSL');
+        $data['confirm_text'] = $this->language->get('button_confirm');
 
         if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/securehosting.tpl')) {
             return $this->load->view($this->config->get('config_template') . '/template/payment/securehosting.tpl', $data);
